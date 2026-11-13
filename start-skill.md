@@ -35,9 +35,9 @@ means enabled. Re-enable with true or by unsetting the relevant override.
 
 Pull the published image with `bash /workspace/codex-cloud-env/install.sh`.
 Use `ghcr.io/linyinfeng/codex-cloud-env:latest` for task containers. GitHub Actions
-builds and publishes it from `image/` when image files change on `main`, or when
-the workflow is manually triggered. Pull requests affecting the image or its
-workflow build the image for CI without publishing. Dependabot updates are
+builds it from `image/` and publishes only on pushes to `main` affecting the
+image or its workflow. Pull requests affecting those files and manual workflow
+runs build the image without publishing. Dependabot updates are
 automatically squash-merged by Mergify after the image build passes and no
 checks are pending or failing. It uses `nixos/nix:latest` and appends
 `image/nix.conf`, including flakes and linyinfeng's Cachix cache.
