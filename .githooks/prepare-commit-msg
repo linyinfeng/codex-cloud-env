@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+# Per-command, repository, or global opt-out via Git's normal config precedence.
+if [ "$(git config --bool --get codex.coauthor || printf true)" = false ]; then
+    exit 0
+fi
+
+# Rebase must preserve the original commit messages.
+if [ -d "$(git rev-parse --git-path rebase-merge)" ] ||
+   [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+    exit 0
+fi
+
+git interpret-trailers --in-place --if-exists addIfDifferent \
+    --trailer 'Co-authored-by: Lin Yinfeng <lin.yinfeng@outlook.com>' "$1"
