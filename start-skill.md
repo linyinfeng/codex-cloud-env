@@ -33,9 +33,11 @@ means enabled. Re-enable with true or by unsetting the relevant override.
 
 ## Nix container
 
-Build the custom image with `bash /workspace/codex-cloud-env/install.sh`.
-It uses `nixos/nix:latest` and appends the repository's `nix.conf` to the image's
-configuration, including flakes and linyinfeng's Cachix cache.
+Pull the published image with `bash /workspace/codex-cloud-env/install.sh`.
+Use `ghcr.io/linyinfeng/codex-cloud-env:latest` for task containers. GitHub Actions
+builds and publishes it from `image/` when image files change on `main`, or when
+the workflow is manually triggered. It uses `nixos/nix:latest` and appends
+`image/nix.conf`, including flakes and linyinfeng's Cachix cache.
 
 Create a container for each task. If a container from the previous task remains,
 remove it with `docker rm -f codex-cloud-env` before starting the new one.
@@ -49,7 +51,7 @@ docker run -d --name codex-cloud-env \
     -e CURL_CA_BUNDLE=/run/cloud-ca.pem \
     -e GH_TOKEN \
     -w /workspace \
-    codex-cloud-env:local sleep infinity
+    ghcr.io/linyinfeng/codex-cloud-env:latest sleep infinity
 docker exec codex-cloud-env nix --version
 ```
 
@@ -68,6 +70,6 @@ nixrun() {
 ```
 
 Workspace files persist through the bind mount. Nix downloads stay in the task
-container until it is removed. Put shared tools in the Dockerfile. Use host
+container until it is removed. Put shared tools in `image/Dockerfile`. Use host
 Git/GitHub tooling and container Nix tooling; use `path:.` flake references if
 Git ownership differs. No project build is required for this generic environment.

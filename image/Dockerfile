@@ -1,4 +1,4 @@
-# Customize the base image with: docker build --build-arg NIX_BASE=... .
+# From the repository root: docker build --build-arg NIX_BASE=... image/
 ARG NIX_BASE=nixos/nix:latest
 FROM ${NIX_BASE}
 
