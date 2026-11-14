@@ -8,9 +8,6 @@ on:
       - .github/workflows/image.yml
   pull_request:
     branches: [main]
-    paths:
-      - image/**
-      - .github/workflows/image.yml
   workflow_dispatch:
 
 permissions:
